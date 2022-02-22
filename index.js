@@ -8,7 +8,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 // When the client is ready, run this code (only once)
 client.once('ready', async () => {
     console.log('Ready to listen!');
-    const result = await joke.jokeOutput();
+    const result = await joke.getJoke();
     console.log(result);
 });
 

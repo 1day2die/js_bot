@@ -28,9 +28,6 @@ async function getJoke() {
         resolve(retval);
     });
 }
-async function jokeOutput() {
-    const ans = getJoke();
-    console.log(ans);
-}
 
-module.exports = { getJoke, jokeOutput };
+
+module.exports = { getJoke };
