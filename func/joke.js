@@ -1,33 +1,29 @@
 
-async function getJoke() {
-    return new Promise((resolve) => {
-        var url = 'https://v2.jokeapi.dev/joke/Dark,Pun';
-        const https = require('https')
-        let retval;
+const fech = require('node-fetch')
 
-        https.get(url, (res) => {
-            let body = "";
+class JokeWrapper {
+    /**
+     * @param {string} jokeapi_url Web address of the joke api
+     */
+    constructor(jokeapi_url) {
+        this.jokeapi_url = jokeapi_url || "https://v2.jokeapi.dev/joke/";
+    }
 
-            res.on("data", (chunk) => {
-                body += chunk;
-            });
-
-            res.on("end", () => {
-                try {
-                        let json = JSON.parse(body);
-                        retval = (json.setup + " || " + json.delivery + "||");
-                } catch (error) {
-                    console.error(error.message);
-                }
-                ;
-            });
-
-        }).on("error", (error) => {
-            console.error(error.message);
+    /**
+     * Get a joke from the joke api
+     * @param {Array} type List of topicable categories
+     * @returns 
+     */
+    getJoke(type = ["Dark", "Pun"]) {
+        return new Promise((resolve, reject) => {
+            fech(`${this.jokeapi_url}${type.join(',')}`)
+                .then(res => res.json())
+                .then(json => {
+                    resolve(json.setup + "\n" + json.delivery);
+                })
+                .catch(e => reject(e));
         });
-        resolve(retval);
-    });
+    }
 }
 
-
-module.exports = { getJoke };
+module.exports = { JokeWrapper };
