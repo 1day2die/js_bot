@@ -13,6 +13,11 @@ class GuesserWrapper {
         this.genderapi_url = genderapi_url || "https://api.genderize.io/";
     }
 
+    /**
+     * Get guessed age of the name
+     * @param {String} name 
+     * @returns 
+     */
     #getAge(name) {
         return fetch(`${this.ageapi_url}?name=${name}`)
             .then(res => res.json())
@@ -23,6 +28,11 @@ class GuesserWrapper {
             });
     }
 
+    /**
+     * Get guessed country of the name
+     * @param {String} name 
+     * @returns 
+     */
     #getCountry(name) {
         return fetch(`${this.landapi_url}?name=${name}`)
             .then(res => res.json())
@@ -33,6 +43,11 @@ class GuesserWrapper {
             });
     }
 
+    /**
+     * Get guessed gender of the name
+     * @param {String} name 
+     * @returns 
+     */
     #getGender(name) {
         return fetch(`${this.genderapi_url}?name=${name}`)
             .then(res => res.json())
@@ -45,9 +60,9 @@ class GuesserWrapper {
 
 
     /**
-     *
-     * @param {string} name
-     * @returns
+     * Will return a object with all data
+     * @param {string} name | Name of the person. Letters Only!
+     * @returns {Promise}
      */
     getGuess(name) {
         const that = this //Not needed, but to make it more clear that this is a class method
