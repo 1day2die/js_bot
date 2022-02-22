@@ -1,5 +1,5 @@
 
-function getJoke() {
+async function getJoke() {
     return new Promise((resolve) => {
         var url = 'https://v2.jokeapi.dev/joke/Dark,Pun';
         const https = require('https')
