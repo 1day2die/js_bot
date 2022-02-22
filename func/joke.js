@@ -1,5 +1,5 @@
 
-const fech = require('node-fetch')
+const fetch = require('node-fetch')
 
 class JokeWrapper {
     /**
@@ -16,10 +16,10 @@ class JokeWrapper {
      */
     getJoke(type = ["Dark", "Pun"]) {
         return new Promise((resolve, reject) => {
-            fech(`${this.jokeapi_url}${type.join(',')}`)
+            fetch(`${this.jokeapi_url}${type.join(',')}`)
                 .then(res => res.json())
                 .then(json => {
-                    resolve(json.setup + "\n" + json.delivery);
+                    resolve(json.setup + "\n ||" + json.delivery+"||");
                 })
                 .catch(e => reject(e));
         });
