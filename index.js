@@ -1,8 +1,10 @@
 const { Client, Intents } = require("discord.js")
 const { token } = require("./config.json")
 const jokeFile = require('./func/joke.js');
+const guesserFile = require('./func/guesser.js');
 
 const Joke = new jokeFile.JokeWrapper();
+const Guesser = new guesserFile.GuesserWrapper();
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
 
@@ -22,8 +24,16 @@ client.on('message', message =>{
 
 client.on("messageCreate", ( async(message) => {
   if (message.author.bot) return;
+  const args = message.content.trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
 
-  if (message.content.startsWith("=joke")) {
+  if (command === '=data') {
+    let name = args[0];
+    const newGuess = await Guesser.getData(name);
+    message.reply(newGuess);
+  }
+
+  if (command === '=joke') {
     const newjoke = await Joke.getJoke();
     message.reply(newjoke);
   }
