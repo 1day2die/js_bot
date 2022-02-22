@@ -13,28 +13,55 @@ class GuesserWrapper {
         this.genderapi_url = genderapi_url || "https://api.genderize.io/";
     }
 
+    #getAge(name) {
+        return fetch(`${this.ageapi_url}?name=${name}`)
+            .then(res => res.json())
+            .then(json => json.age)
+            .catch(err => {
+                console.log(err);
+                return new Error("Error", err);
+            });
+    }
+
+    #getCountry(name) {
+        return fetch(`${this.landapi_url}?name=${name}`)
+            .then(res => res.json())
+            .then(json => json.country[0].country_id)
+            .catch(err => {
+                console.log(err);
+                return new Error("Error", err);
+            });
+    }
+
+    #getGender(name) {
+        return fetch(`${this.genderapi_url}?name=${name}`)
+            .then(res => res.json())
+            .then(json => json.gender)
+            .catch(err => {
+                console.log(err);
+                return new Error("Error", err);
+            });
+    }
+
+
     /**
      *
      * @param {string} name
      * @returns
      */
-    getData(name) {
-        var retvar = "";
+    getGuess(name) {
+        const that = this //Not needed, but to make it more clear that this is a class method
         return new Promise((resolve, reject) => {
-            fetch(`${this.ageapi_url}?name=${name}`)
-                .then(res => res.json())
-                .then(json => {
-                   return retvar += json.name + "\n guessed age: " + json.age + "";
-                })
-                .then(fetch(`${this.genderapi_url}?name=${name}`))
-                .then(res => res.json())
-                .then(json => {
-                    return retvar += "\n guessed gender: " + json.gender;
-                })
-                .then(resolve(retvar))
-                .catch(e => reject(e));
+            if (!/^[a-zA-Z]+$/.test(name)) { reject(new Error("Error: Name must be a string with only letters")) } else {
+                Promise.all([that.#getAge(name), that.#getCountry(name), that.#getGender(name)])
+                    .then(data => {
+                        const [age, country, gender] = data
+                        resolve({ age, country, gender })
+                    })
+                    .catch(e => reject(e));
+            }
         });
     }
 }
 
-module.exports = {GuesserWrapper};
+module.exports = { GuesserWrapper };
