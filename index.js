@@ -29,8 +29,8 @@ client.on("messageCreate", ( async(message) => {
 
   if (command === '=data') {
     let name = args[0];
-    const newGuess = await Guesser.getData(name);
-    message.reply(newGuess);
+    const newGuess = await Guesser.getGuess(name);
+    message.reply(`I think ${name} is ${newGuess.age} years old and from ${newGuess.country} and his gender is ${newGuess.gender}`);
   }
 
   if (command === '=joke') {
