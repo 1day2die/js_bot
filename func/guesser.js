@@ -67,14 +67,14 @@ class GuesserWrapper {
     getGuess(name) {
         const that = this //Not needed, but to make it more clear that this is a class method
         return new Promise((resolve, reject) => {
-            if (!/^[a-zA-Z]+$/.test(name)) { reject(new Error("Error: Name must be a string with only letters")) } else {
+           
                 Promise.all([that.#getAge(name), that.#getCountry(name), that.#getGender(name)])
                     .then(data => {
                         const [age, country, gender] = data
                         resolve({ age, country, gender })
                     })
                     .catch(e => reject(e));
-            }
+            
         });
     }
 }
